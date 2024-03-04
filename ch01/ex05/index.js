@@ -1,18 +1,18 @@
-function abs(x) {
+export function abs(x) {
   if (x >= 0) {
     return x;
   } else {
     return -x;
   }
 }
-function sum(array) {
+export function sum(array) {
   let sum = 0;
   for (let x of array) {
     sum += x;
   }
   return sum;
 }
-function factorial(n) {
+export function factorial(n) {
   let product = 1;
   while (n > 1) {
     product *= n;

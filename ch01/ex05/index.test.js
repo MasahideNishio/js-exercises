@@ -1,8 +1,4 @@
 import { abs, sum, factorial } from "./index.js";
-
-// TypeScript の場合は以下:
-// import { abs, sum, factorial } from "./index.ts";
-
 describe("math", () => {
   describe("abs", () => {
     it("returns same value when positive value given", () => {
@@ -23,7 +19,7 @@ describe("math", () => {
       expect(sum([2, 4, 5])).toBe(11);
     });
     it("returns zero value when empty array given", () => {
-      expect(sum([])).toBe(5);
+      expect(sum([])).toBe(0);
     });
   });
 
