@@ -9,6 +9,6 @@ describe("charfreq", () => {
     const expectedStdout = await promisify(exec)(
       "node ch02/ex05/charfreq.js < ch02/ex05/charfreq.js"
     );
-    expect(stdout.toString()).toBe(expectedStdout.toString());
+    expect(stdout.stdout.toString()).toBe(expectedStdout.stdout.toString());
   });
 });

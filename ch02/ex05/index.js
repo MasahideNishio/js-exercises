@@ -60,7 +60,7 @@ class Histogram {
         // If the counts differ
         return b[1] - a[1] // sort by largest count.
       }
-    });
+    })
 
     // Convert the counts to percentages
     for (const entry of entries) {
@@ -96,4 +96,4 @@ async function histogramFromStdin() {
 // It makes a Histogram object from standard input, then prints the histogram.
 histogramFromStdin().then((histogram) => {
   console.log(histogram.toString())
-});
+})
