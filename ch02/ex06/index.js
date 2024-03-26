@@ -1,0 +1,1 @@
+export function fizzbuzz() { let result = ''; for (let i = 1; i <= 100; i++) result += ((i % 3 ? '' : 'Fizz') + (i % 5 ? '' : 'Buzz') || i.toString()) + '\n'; return result; }
