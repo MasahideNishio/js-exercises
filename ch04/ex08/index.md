@@ -1,0 +1,5 @@
+- undefinedはJavaScriptのグローバルオブジェクトのプロパティであり、その初期値はプリミティブ値のundefinedである。
+- 最近のブラウザー (JavaScript 1.8.5 / Firefox 4 以降) での undefined は、 ECMAScript 5 仕様により、設定不可、書込不可のプロパティとなるが、それ以前のブラウザーではグローバルオブジェクトのプロパティとしてのundefinedに他の値を代入することができた。
+- そのため、古いブラウザではundefinedと比較しても必ずしもプリミティブ値のundefinedとの比較にならない場合があるため、必ずプリミティブ値のundefinedを返すvoid演算子を使うことでundefinedかどうかを判定する方が確実だったため、このような実装がされていた。
+- 最新のブラウザーではundefinedは設定不可、書込不可なので、voidを使わずにundefinedと比較するだけで問題ない。
+- [参考リンク MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/undefined)
