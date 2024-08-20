@@ -86,7 +86,13 @@ export function match(pat, s) {
 // seq2 の可変長引数版
 export function seq(...pats) {
   // HINT: seq(p1, p2, p3, p4) = seq2(seq2(seq2(p1, p2), p3), p4)
-  throw new Error("実装してね");
+  if (pats.length === 0) {
+    return (str, pos, k) => k(str, pos);
+  }
+  const [first, ...rest] = pats;
+  return (str, pos, k) => {
+    return first(str, pos, (nstr, npos) => seq(...rest)(nstr, npos, k));
+  };
 }
 
 // alt2 の可変長引数版
