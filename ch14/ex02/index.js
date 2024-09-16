@@ -1,5 +1,21 @@
 export class MyArrayLike {
-  // TODO
+  constructor(length) {
+    this.length = length; // 配列のようなクラスのために長さを持つ
+  }
+
+  // 配列のように動作するためにSymbol.iteratorを実装する
+  [Symbol.iterator]() {
+    let index = 0;
+    return {
+      next: () => {
+        if (index < this.length) {
+          return { value: this[index++], done: false };
+        } else {
+          return { done: true };
+        }
+      },
+    };
+  }
 }
 
 export class MyArray extends Array {
@@ -7,5 +23,8 @@ export class MyArray extends Array {
     super(...items);
   }
 
-  // TODO
+  // Symbol.speciesをオーバーライドする
+  static get [Symbol.species]() {
+    return MyArrayLike;
+  }
 }
