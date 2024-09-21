@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Import Test</title>
+  </head>
+  <body>
+    <button id="loadModule">Load Module</button>
+
+    <script type="module">
+      const button = document.getElementById("loadModule");
+      button.addEventListener("click", async () => {
+        // モジュールの動的インポート
+        const module = await import("./module.js");
+        module.sayHello(this);
+      });
+    </script>
+  </body>
+</html>

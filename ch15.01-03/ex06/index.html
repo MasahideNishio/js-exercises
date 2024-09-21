@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ご利用ありがとうございます</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #740000;
+        color: #000000;
+        padding: 20px;
+      }
+      .warning {
+        background-color: #d6ff4d;
+        border: 2px solid #000000;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+      .info {
+        font-size: 1.2em;
+        margin: 10px 0;
+      }
+      h1 {
+        color: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>サービスご利用ありがとうございました</h1>
+    <div class="warning">
+      <p>
+        この度の動画サービスのご利用料金をただちに下記へ振り込んでください。
+      </p>
+      <p>
+        あなたの個人情報は収集していますので、振り込まれない場合裁判所を通じて督促を行います。
+      </p>
+      <div id="info"></div>
+    </div>
+
+    <script>
+      function displayInfo() {
+        const info = `
+        <div class="info">OS: ${navigator.platform}</div>
+        <div class="info">ブラウザ: ${navigator.userAgent}</div>
+        <div class="info">言語: ${navigator.language}</div>
+        <div class="info">オンライン状況: ${
+          navigator.onLine ? "オンライン" : "オフライン"
+        }</div>
+        <div class="info">Cookie有効: ${
+          navigator.cookieEnabled ? "有効" : "無効"
+        }</div>
+        <div class="info">画面の幅: ${window.screen.width}px</div>
+        <div class="info">画面の高さ: ${window.screen.height}px</div>
+      `;
+        document.getElementById("info").innerHTML = info;
+      }
+
+      displayInfo();
+    </script>
+  </body>
+</html>
