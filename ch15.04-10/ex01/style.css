@@ -1,3 +1,129 @@
-.completed {
+/* 全体のフォント、背景色、マージンやパディング、中央寄せ、文字色を設定 */
+body {
+  font-family: "Roboto", sans-serif;
+  background: linear-gradient(135deg, #1e1e1e, #282828);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #ffffff;
+}
+
+/* コンテナ部分、透明感とシャドウをつける */
+main {
+  max-width: 500px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 入力フォームのマージン */
+#new-todo-form {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+/* TODO入力欄のサイズや色のスタイル */
+#new-todo {
+  flex: 1;
+  padding: 15px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  margin-right: 10px;
+}
+
+/* placeholder==ヒントとして表示される文字列のスタイル */
+#new-todo::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* フォーカス時されたときのアニメーション設定 */
+#new-todo:focus {
+  outline: none;
+  box-shadow: 0 0 8px #00e6ff;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ボタンの色などのスタイル */
+button {
+  padding: 15px 25px;
+  background-color: #00e6ff;
+  color: #1e1e1e;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+/* ボタンにマウスオーバーしたときの色や大きさの変化*/
+button:hover {
+  background-color: #00b3cc;
+  transform: scale(1.05);
+}
+
+/* ToDoリストの配置スタイル */
+ul#todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* liタグ(TODOリストのいち要素)のスタイル */
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+/* TODOリストにマウスオーバーしたときのサイズ変更 */
+li:hover {
+  transform: translateY(-5px);
+}
+
+/* 完了済みのタスクに線を引く */
+li.completed {
   text-decoration: line-through;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* チェックボックスのスタイル */
+.toggle {
+  margin-right: 15px;
+  transform: scale(1.2);
+}
+
+/* 削除ボタンのスタイル */
+button.destroy {
+  background: none;
+  border: none;
+  color: #ff4b4b;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+/* 削除ボタンにマウスオーバーしたときのスタイル */
+button.destroy:hover {
+  color: #ff2020;
+}
+
+/* 最後のアイテムの下にボーダーを表示しない */
+li:last-child {
+  margin-bottom: 0;
 }
