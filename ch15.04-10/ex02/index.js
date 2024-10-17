@@ -13,15 +13,16 @@ form.addEventListener("submit", (e) => {
 
   const clone = template.content.cloneNode(true);
   const li = clone.querySelector("li");
-  const toggle = clone.querySelector("input");
-  const label = clone.querySelector("label");
-  const destroy = clone.querySelector("button");
+  const toggle = clone.querySelector("input.toggle");
+  const label = clone.querySelector("label.content");
+  const destroy = clone.querySelector("button.destroy");
 
   toggle.addEventListener("change", () => {
-    // IMPORTANT: ChatGPT にはこの関数内のコードのみ変更してもらうこと
-    li.classList.toggle("completed", toggle.checked);
+    li.classList.toggle("bg-gray-200", toggle.checked);
   });
+
   label.textContent = todo;
+
   destroy.addEventListener("click", () => {
     li.remove();
   });
