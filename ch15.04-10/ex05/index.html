@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Custom Circle</title>
+    <style>
+      /* 基本的なスタイル */
+      inline-circle {
+        display: inline-block;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- カスタム要素を使って円を表示 -->
+    <inline-circle border-color="blue" hover-scale="1.5"></inline-circle>
+    <inline-circle border-color="green" hover-scale="0.5"></inline-circle>
+
+    <script>
+      class InlineCircle extends HTMLElement {
+        // HTMLElementを継承しなくてはいけない
+        constructor() {
+          super(); // super()を呼び出す必要がある
+          const shadow = this.attachShadow({ mode: "open" });
+          const circle = document.createElement("div");
+          circle.style.width = "50px";
+          circle.style.height = "50px";
+          circle.style.borderRadius = "50%";
+          circle.style.border =
+            "2px solid " + (this.getAttribute("border-color") || "black");
+          const hoverScale = this.getAttribute("hover-scale") || 1; // マウスオーバー時のスケール
+
+          // マウスオーバー時にサイズを変更する
+          circle.addEventListener("mouseover", () => {
+            circle.style.transform = `scale(${hoverScale})`;
+          });
+          circle.addEventListener("mouseout", () => {
+            circle.style.transform = "scale(1)";
+          });
+          shadow.appendChild(circle);
+        }
+      }
+      customElements.define("inline-circle", InlineCircle); // customElements.defineで登録する必要がある
+    </script>
+  </body>
+</html>
