@@ -39,6 +39,11 @@ function renderGrid(grid) {
   }
 }
 
+// ライフゲームのルール
+// 生きているセル（true）の隣に生きているセルが2個または3個ある場合、そのセルは生き続ける。
+// 生きているセルの隣に生きているセルが2個未満または4個以上ある場合、そのセルは死ぬ。
+// 死んでいるセル（false）の隣に生きているセルがちょうど3個ある場合、そのセルは生き返る。
+
 // Life Game のルールに従ってセルを更新する
 function updateGrid(grid) {
   // 新しいグリッドを作成
@@ -47,6 +52,28 @@ function updateGrid(grid) {
   for (let row = 0; row < ROWS; row++) {
     for (let col = 0; col < COLS; col++) {
       // 周囲のセルの生存数を数えて nextGrid[row][col] に true or false を設定する (実装してね)
+      let neighbors = 0;
+
+      // 周囲のセルの生存数を数える
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          if (i === 0 && j === 0) continue; // 自分自身はカウントしない
+          const newRow = row + i;
+          const newCol = col + j;
+
+          // グリッドの範囲内であることを確認
+          if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS) {
+            neighbors += grid[newRow][newCol] ? 1 : 0;
+          }
+        }
+      }
+
+      // nextGrid[row][col] に true or false を設定する
+      if (grid[row][col]) {
+        nextGrid[row][col] = neighbors === 2 || neighbors === 3; // 生きているセル（true）の隣に生きているセルが2個または3個ある場合、そのセルは生き続ける。
+      } else {
+        nextGrid[row][col] = neighbors === 3; // 死んでいるセル（false）の隣に生きているセルがちょうど3個ある場合、そのセルは生き返る。
+      }
     }
   }
   return nextGrid;

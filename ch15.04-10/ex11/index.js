@@ -43,6 +43,16 @@ form.addEventListener("submit", (e) => {
   renderTodos(todos);
 });
 
+// hashchange イベント→ index.html#active などの URL が変更されたときに発火する
 window.addEventListener("hashchange", () => {
   // ここを実装してね
+  const hash = window.location.hash;
+  let filteredTodos = todos;
+
+  if (hash === "#/active") {
+    filteredTodos = todos.filter((todo) => !todo.completed); // activeなら未完了のToDo
+  } else if (hash === "#/completed") {
+    filteredTodos = todos.filter((todo) => todo.completed); // complatedなら完了済みのToDo
+  }
+  renderTodos(filteredTodos);
 });
