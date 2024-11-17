@@ -20,7 +20,7 @@ async function serveContentsHandler(url, _req, res) {
     const filePath = path.join(
       __dirname,
       "contents",
-      reqPath === "/" ? "index.html" : path.join(...reqPath.split("/")),
+      reqPath === "/" ? "index.html" : path.join(...reqPath.split("/"))
     );
 
     const content = await fs.readFile(filePath);
@@ -45,6 +45,20 @@ async function serveContentsHandler(url, _req, res) {
 function cspMiddleware(_url, req, res) {
   // TODO: CSP ヘッダを設定する
   // res.setHeader("Content-Security-Policy", "TODO");
+
+  // ★ex07★
+  // Content-Security-Policy ヘッダを設定
+
+  // unsafe-inline を許可してスクリプトのインライン実行を許可(RICOH)
+  // hello.js を許可
+  res.setHeader(
+    "Content-Security-Policy",
+    "script-src 'unsafe-inline'  http://localhost:3000/hello.js"
+  );
+
+  // 参考
+  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src
+  // https://qiita.com/yuria-n/items/c50a1bc0ba51f6e33215
   return true;
 }
 
@@ -115,7 +129,7 @@ async function main() {
     .createServer(async function (req, res) {
       await routes(["GET", "/*", serveContentsHandler, cspMiddleware])(
         req,
-        res,
+        res
       );
     })
     .listen(3000);
