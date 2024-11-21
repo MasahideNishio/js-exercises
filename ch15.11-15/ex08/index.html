@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSocket Client</title>
+    <style>
+      .response {
+        margin-left: 10px;
+        color: green;
+      }
+      .error {
+        margin-left: 10px;
+        color: red;
+      }
+      .request {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>WebSocket Client</h1>
+    <div id="requests">
+      <div class="request">
+        <input type="text" placeholder="Enter message..." />
+        <span class="response"></span>
+      </div>
+    </div>
+    <button id="addRequest">Add Input Field</button>
+    <button id="sendAll">Send All Requests</button>
+
+    <script>
+      const requestContainer = document.getElementById("requests");
+      const addRequestButton = document.getElementById("addRequest");
+      const sendAllButton = document.getElementById("sendAll");
+
+      // WebSocket接続1: リクエスト送信とレスポンス受信用
+      const wsRequest = new WebSocket("ws://localhost:3003");
+
+      // WebSocket接続2: サーバーからのリクエストに応答する用
+      const wsResponder = new WebSocket("ws://localhost:3003");
+
+      wsRequest.onopen = () => {
+        console.log("Request WebSocket connected");
+      };
+
+      wsResponder.onopen = () => {
+        console.log("Responder WebSocket connected");
+      };
+
+      // サーバーからのリクエストを受け取ってレスポンスを返す
+      wsResponder.onmessage = (event) => {
+        const request = JSON.parse(event.data);
+
+        // レスポンスを構築してサーバーに返す
+        const response = {
+          id: request.id,
+          msg: `Hello, ${request.msg}`,
+        };
+
+        console.log("Responder received:", request);
+        wsResponder.send(JSON.stringify(response));
+      };
+
+      // sendRequest関数: リクエストを送信してレスポンスを取得
+      function sendRequest(requestId, message) {
+        return new Promise((resolve, reject) => {
+          const timeout = 10000; // タイムアウト時間(ms)
+          const msg = JSON.stringify({ id: requestId, msg: message });
+          let timeoutHandle;
+
+          wsRequest.send(msg);
+
+          const handleMessage = (event) => {
+            const response = JSON.parse(event.data);
+            if (response.id === requestId) {
+              clearTimeout(timeoutHandle);
+              wsRequest.removeEventListener("message", handleMessage);
+              resolve(response.msg);
+            }
+          };
+
+          wsRequest.addEventListener("message", handleMessage);
+
+          // タイムアウト設定
+          timeoutHandle = setTimeout(() => {
+            wsRequest.removeEventListener("message", handleMessage);
+            reject(new Error("Timeout"));
+          }, timeout);
+        });
+      }
+
+      // 新しい入力欄を追加
+      addRequestButton.addEventListener("click", () => {
+        const newRequest = document.createElement("div");
+        newRequest.classList.add("request");
+        newRequest.innerHTML = `
+        <input type="text" placeholder="Enter message..." />
+        <span class="response"></span>
+      `;
+        requestContainer.appendChild(newRequest);
+      });
+
+      // 全てのリクエストを送信
+      sendAllButton.addEventListener("click", async () => {
+        const requests = Array.from(
+          requestContainer.querySelectorAll(".request")
+        );
+        const promises = [];
+
+        requests.forEach((requestDiv, index) => {
+          const input = requestDiv.querySelector("input");
+          const responseSpan = requestDiv.querySelector(".response");
+          const message = input.value;
+
+          // 初期表示をクリア
+          responseSpan.textContent = "Sending...";
+          responseSpan.className = "response";
+
+          // リクエスト送信をPromiseで管理
+          const requestId = index + 1; // IDは単純に配列のインデックスで生成
+          const promise = sendRequest(requestId, message)
+            .then((response) => {
+              responseSpan.textContent = response;
+            })
+            .catch((error) => {
+              responseSpan.textContent = error.message;
+              responseSpan.className = "response error";
+            });
+
+          promises.push(promise);
+        });
+
+        // 全リクエストの完了を待つ
+        try {
+          await Promise.all(promises);
+          console.log("All requests completed");
+        } catch (error) {
+          console.error("Error");
+        }
+      });
+    </script>
+  </body>
+</html>
