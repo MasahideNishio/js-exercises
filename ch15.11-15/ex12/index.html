@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OneDrive ファイルアップローダー</title>
+  </head>
+  <body>
+    <h1>OneDrive ファイルアップローダー</h1>
+
+    <label for="accessToken">アクセストークン:</label>
+    <input
+      type="text"
+      id="accessToken"
+      placeholder="Graph Explorerで取得したアクセストークンを入力してください"
+    />
+    <br /><br />
+
+    <label for="fileInput">アップロードするファイルを選択してください:</label>
+    <input type="file" id="fileInput" />
+    <br /><br />
+
+    <button id="uploadButton">アップロード</button>
+
+    <p id="result"></p>
+
+    <script src="index.js"></script>
+  </body>
+</html>
