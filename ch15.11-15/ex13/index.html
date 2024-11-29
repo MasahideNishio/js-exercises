@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LLM Chat</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      #chat-container {
+        border: 1px solid #ccc;
+        padding: 10px;
+        max-width: 600px;
+        margin: auto;
+        height: 400px;
+        overflow-y: auto;
+        background-color: #f9f9f9;
+      }
+      .message {
+        margin: 10px 0;
+      }
+      .user {
+        text-align: right;
+        color: #007bff;
+      }
+      .bot {
+        text-align: left;
+        color: #333;
+      }
+      #input-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+      }
+      #user-input {
+        width: 50%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      #send-button {
+        padding: 10px;
+        margin-left: 5px;
+        border: none;
+        background-color: #0077ff;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chat-container"></div>
+    <div id="input-container">
+      <input
+        type="text"
+        id="user-input"
+        placeholder="メッセージを入れてください"
+      />
+      <button id="send-button">Send</button>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>
