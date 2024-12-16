@@ -31,3 +31,23 @@ async function startChild() {
 }
 
 // TODO: ここに処理を書く
+
+// 子プロセスが終了したら再起動する処理
+async function monitorChild() {
+  while (true) {
+    console.log("Starting child process");
+    const [code, signal] = await startChild();
+
+    console.log(`Child process exited with code: ${code}, signal: ${signal}`);
+
+    // 子プロセスが正常終了の場合は再起動しない
+    if (code === 0) {
+      console.log("正常終了");
+      break;
+    }
+
+    console.log("Restarting child process");
+  }
+}
+
+monitorChild();
