@@ -6,9 +6,7 @@ import fetch from "node-fetch";
 import process from "process";
 
 // GitHub Personal Access Token を環境変数から取得 (安全性のため)
-// const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const GITHUB_TOKEN =
-  "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";
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 if (!GITHUB_TOKEN) {
   console.error("Error: GitHub Token is missing");
   process.exit(1);
