@@ -1,12 +1,15 @@
-//
-// Flowチェッカーのチェック対象とする
+// 以下の型を定義すること
+//  - User: { id: number, name: string }
+//  - Task: { title: string, completed: boolean, user: User }
+//  - Priority: "low"|"middle"|"high"のいずれかの値をとる
+//  - PriorityTask: Taskかつ{ priority: Priority }を持つ型
 
 // Userオブジェクトであることを判定する
-export function isUserObject(obj) {
+function isUserObject(obj) {
   return (
     typeof obj === "object" &&
-    typeof obj.id === "number" &&
-    typeof obj.name === "string"
+    typeof obj["id"] === "number" &&
+    typeof obj["name"] === "string"
   );
 }
 

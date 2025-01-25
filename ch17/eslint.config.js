@@ -8,7 +8,7 @@ export default [
   js.configs.recommended,
   eslintConfigPrettier,
   {
-    files: ["**/*.js"],
+    files: ["ex01/*.js"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
@@ -20,10 +20,10 @@ export default [
       // Google スタイルのルールを適用（valid-jsdocとrequire-jsdocはFlat Configモードだとエラーが出てしまうため除外）
       ...Object.fromEntries(
         Object.entries(googleConfig.rules).filter(
-          ([key]) => key !== "require-jsdoc" && key !== "valid-jsdoc",
-        ),
+          ([key]) => key !== "require-jsdoc" && key !== "valid-jsdoc"
+        )
       ),
     },
-    ignores: ["ex01/format_sample.js"],
+    ignores: ["ex01/format_sample.js", "ex02"],
   },
 ];

@@ -1,0 +1,60 @@
+/* App.css */
+
+/* 全体のスタイル */
+.App {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 要素を左寄せに */
+  justify-content: flex-start;
+  height: 100vh;
+}
+
+/* ToDoリストのスタイル */
+ul {
+  list-style-type: none;
+  padding-left: 0;
+  width: 100%;
+}
+
+/* 各ToDoアイテムのスタイル */
+li {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 300px; /* 幅を設定 */
+}
+
+/* フォームのスタイル */
+form {
+  margin-bottom: 20px;
+}
+
+/* 入力フィールドとボタンのスタイル */
+input[type="text"] {
+  padding: 10px;
+  width: 200px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button:focus {
+  outline: none;
+}

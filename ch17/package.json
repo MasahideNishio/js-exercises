@@ -1,16 +1,32 @@
 {
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
     "@eslint/js": "^9.18.0",
+    "@pollyjs/adapter-fetch": "^6.0.6",
+    "@pollyjs/core": "^6.0.6",
+    "@pollyjs/persister-fs": "^6.0.6",
+    "axios": "^1.7.9",
+    "babel-jest": "^29.7.0",
     "eslint": "^9.18.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
+    "fetch-mock-jest": "^1.5.1",
     "globals": "^15.14.0",
-    "prettier": "^3.4.2"
+    "jest": "^29.7.0",
+    "prettier": "^3.4.2",
+    "whatwg-fetch": "^3.6.20"
   },
   "type": "module",
   "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
     "lint": "eslint --fix ex01",
     "fmt": "prettier --write ex01/*.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "node-fetch": "^3.3.2",
+    "ts-jest": "^29.2.5"
   }
 }
