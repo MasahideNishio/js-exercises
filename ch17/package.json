@@ -8,6 +8,7 @@
     "@pollyjs/persister-fs": "^6.0.6",
     "axios": "^1.7.9",
     "babel-jest": "^29.7.0",
+    "dotenv": "^16.4.7",
     "eslint": "^9.18.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^10.0.1",
@@ -25,7 +26,7 @@
     "fmt": "prettier --write ex01/*.js"
   },
   "dependencies": {
-    "dotenv": "^16.4.7",
+    "@pollyjs/adapter-node-http": "^6.0.6",
     "node-fetch": "^3.3.2",
     "ts-jest": "^29.2.5"
   }

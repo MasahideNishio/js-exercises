@@ -1,10 +1,9 @@
 import fetch from "node-fetch";
+import process from "process";
 
 const BASE_URL = "https://api.github.com";
 
-/**
- * トークン取得関数を分離
- */
+// トークン取得関数を分離(外部スクリプトから呼び出す際に明示的な取得が必要)
 export function getToken() {
   const token = process.env.GITHUB_TOKEN;
   if (!token) {
@@ -13,18 +12,7 @@ export function getToken() {
   return token;
 }
 
-/**
- * fetchクライアント生成関数を分離
- */
-export function createFetchClient() {
-  return fetch;
-}
-
-/**
- * HTTP リクエストのラッパー関数
- */
 export async function makeRequest(method, url, data = null, verbose = false) {
-  const fetchClient = createFetchClient();
   const options = {
     method,
     headers: {
@@ -35,13 +23,12 @@ export async function makeRequest(method, url, data = null, verbose = false) {
     },
     body: data ? JSON.stringify(data) : null,
   };
-
   if (verbose) {
     console.log("HTTP Request:", { method, url, data });
   }
 
   try {
-    const response = await fetchClient(`${BASE_URL}${url}`, options);
+    const response = await fetch(`${BASE_URL}${url}`, options);
 
     if (!response.ok) {
       throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
@@ -59,17 +46,11 @@ export async function makeRequest(method, url, data = null, verbose = false) {
   }
 }
 
-/**
- * 新しいIssueを作成
- */
 export async function createIssue(owner, repo, title, body, verbose = false) {
   const data = { title, body };
   return makeRequest("POST", `/repos/${owner}/${repo}/issues`, data, verbose);
 }
 
-/**
- * Issueをクローズ
- */
 export async function closeIssue(owner, repo, issue_number, verbose = false) {
   const data = { state: "closed" };
   return makeRequest(
@@ -80,9 +61,6 @@ export async function closeIssue(owner, repo, issue_number, verbose = false) {
   );
 }
 
-/**
- * オープンなIssue一覧を取得
- */
 export async function listIssues(owner, repo, verbose = false) {
   return makeRequest(
     "GET",
