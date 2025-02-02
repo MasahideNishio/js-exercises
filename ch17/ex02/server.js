@@ -1,5 +1,7 @@
 import fetch from "node-fetch";
 import process from "process";
+import dotenv from "dotenv";
+dotenv.config(); // .envファイルを読み込む準備
 
 const BASE_URL = "https://api.github.com";
 
@@ -19,6 +21,7 @@ export async function makeRequest(method, url, data = null, verbose = false) {
       Authorization: `Bearer ${getToken()}`,
       Accept: "application/vnd.github+json",
       "Content-Type": "application/json",
+      "User-Agent": "MasahideNishio",
       "X-GitHub-Api-Version": "2022-11-28",
     },
     body: data ? JSON.stringify(data) : null,

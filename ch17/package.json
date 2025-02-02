@@ -28,6 +28,7 @@
   "dependencies": {
     "@pollyjs/adapter-node-http": "^6.0.6",
     "node-fetch": "^3.3.2",
+    "octokit": "^4.1.0",
     "ts-jest": "^29.2.5"
   }
 }

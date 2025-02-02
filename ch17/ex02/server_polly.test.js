@@ -27,15 +27,27 @@ describe("GitHub API with Polly.js", () => {
 
   const testOwner = "MasahideNishio";
   const testRepo = "js-exercises";
-
+  let issueNumber;
   it("should create a new issue", async () => {
     const issue = await createIssue(
       testOwner,
       testRepo,
       "Test Issue",
-      "This is a test issue.",
-      true
+      "This is a test issue."
     );
     expect(issue).toHaveProperty("number");
+    issueNumber = issue.number;
+  });
+
+  it("should close an issue", async () => {
+    const response = await closeIssue(testOwner, testRepo, issueNumber);
+    expect(response).toHaveProperty("state", "closed");
+  });
+
+  it("should list open issues", async () => {
+    const issues = await listIssues(testOwner, testRepo);
+    expect(Array.isArray(issues)).toBe(true);
   });
 });
+
+// 1回成功した後GitHub上に新たなIssueが作成されなくなることを確認
