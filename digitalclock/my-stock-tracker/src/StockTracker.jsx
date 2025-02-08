@@ -7,6 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import "./StockTracker.css";
 
 const STOCK_KEY = "savedStocks";
 const UPDATE_KEY = "updateFrequency";
@@ -46,7 +47,7 @@ const StockPanel = ({ symbol, onRemove }) => {
       if (!response.ok) throw new Error("Failed to fetch historical data");
       const data = await response.json();
 
-      const formattedData = data.map((entry) => ({
+      const formattedData = data.slice(-7).map((entry) => ({
         date: entry.date.split("T")[0],
         price: entry.close,
       }));
@@ -62,14 +63,14 @@ const StockPanel = ({ symbol, onRemove }) => {
   }, [symbol]);
 
   return (
-    <div>
+    <div className="stock-panel">
       <h3>{symbol}</h3>
       {stockData ? (
         <div>
           <p>価格: {stockData.regularMarketPrice} 円</p>
           <p>
             前日比: {stockData.regularMarketChange} 円 (
-            {stockData.regularMarketChangePercent}%)
+            {stockData.regularMarketChangePercent.toFixed(2)}%)
           </p>
           <button onClick={() => onRemove(symbol)}>削除</button>
           <ResponsiveContainer width="100%" height={200}>
@@ -89,17 +90,14 @@ const StockPanel = ({ symbol, onRemove }) => {
 };
 
 const StockTracker = () => {
-  const [stocks, setStocks] = useState(["^N225"]);
-  const [newStock, setNewStock] = useState("");
-  const [updateInterval, setUpdateInterval] = useState(DEFAULT_UPDATE_INTERVAL);
-
-  useEffect(() => {
+  const [stocks, setStocks] = useState(() => {
     const savedStocks = JSON.parse(localStorage.getItem(STOCK_KEY));
-    if (savedStocks) setStocks(savedStocks);
-
-    const savedInterval = localStorage.getItem(UPDATE_KEY);
-    if (savedInterval) setUpdateInterval(Number(savedInterval));
-  }, []);
+    return savedStocks ? savedStocks : ["^N225"];
+  });
+  const [newStock, setNewStock] = useState("");
+  const [updateInterval, setUpdateInterval] = useState(() => {
+    return Number(localStorage.getItem(UPDATE_KEY)) || DEFAULT_UPDATE_INTERVAL;
+  });
 
   useEffect(() => {
     localStorage.setItem(STOCK_KEY, JSON.stringify(stocks));
@@ -145,9 +143,11 @@ const StockTracker = () => {
           <option value={0}>更新しない</option>
         </select>
       </div>
-      {stocks.map((symbol) => (
-        <StockPanel key={symbol} symbol={symbol} onRemove={removeStock} />
-      ))}
+      <div className="stock-container">
+        {stocks.map((symbol) => (
+          <StockPanel key={symbol} symbol={symbol} onRemove={removeStock} />
+        ))}
+      </div>
     </div>
   );
 };

@@ -25,28 +25,23 @@ app.get("/api/historical/:symbol", async (req, res) => {
     const symbol = decodeURIComponent(req.params.symbol);
     console.log("Fetching historical data for:", symbol);
 
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 7); // 7日前
+
     const result = await yahooFinance.historical(symbol, {
-      period1: "2023-01-01",
-      period2: "2025-01-01",
+      period1: sevenDaysAgo.toISOString().split("T")[0], // 7日前
+      period2: today.toISOString().split("T")[0], // 今日
       interval: "1d",
     });
 
-    const formattedData = result.map((entry) => {
-      let dateStr;
-      if (entry.date instanceof Date) {
-        dateStr = entry.date.toISOString().split("T")[0];
-      } else if (typeof entry.date === "number") {
-        dateStr = new Date(entry.date).toISOString().split("T")[0];
-      } else {
-        console.error("Unexpected date format:", entry.date);
-        dateStr = "Invalid Date";
-      }
-
-      return {
-        date: dateStr,
-        close: entry.close,
-      };
-    });
+    const formattedData = result.map((entry) => ({
+      date:
+        entry.date instanceof Date
+          ? entry.date.toISOString().split("T")[0]
+          : "Invalid Date",
+      close: entry.close,
+    }));
 
     res.json(formattedData);
   } catch (error) {
