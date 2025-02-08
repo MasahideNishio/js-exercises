@@ -9,9 +9,9 @@ import {
 } from "recharts";
 import "./StockTracker.css";
 
-const STOCK_KEY = "savedStocks";
-const UPDATE_KEY = "updateFrequency";
-const DEFAULT_UPDATE_INTERVAL = 60000;
+const STOCK_KEY = "savedStocks"; // 登録銘柄の保存キー
+const UPDATE_KEY = "updateFrequency"; // 更新頻度の保存キー
+const DEFAULT_UPDATE_INTERVAL = 60000; // デフォルトの更新頻度 (1分)
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
@@ -28,6 +28,7 @@ const StockPanel = ({ symbol, onRemove }) => {
   const [stockData, setStockData] = useState(null);
   const [historicalData, setHistoricalData] = useState([]);
 
+  // 最新のデータを取得
   const fetchStockData = async (symbol) => {
     try {
       const response = await fetch(`http://localhost:3001/api/stock/${symbol}`);
@@ -39,6 +40,7 @@ const StockPanel = ({ symbol, onRemove }) => {
     }
   };
 
+  // 履歴データを取得
   const fetchHistoricalData = async (symbol) => {
     try {
       const response = await fetch(
@@ -64,12 +66,16 @@ const StockPanel = ({ symbol, onRemove }) => {
 
   return (
     <div className="stock-panel">
-      <h3>{symbol}</h3>
+      <h3>{stockData ? `${stockData.longName} (${symbol})` : symbol}</h3>
       {stockData ? (
         <div>
-          <p>価格: {stockData.regularMarketPrice} 円</p>
           <p>
-            前日比: {stockData.regularMarketChange} 円 (
+            価格: {stockData.regularMarketPrice}{" "}
+            {stockData.currency === "JPY" ? "円" : "USD"}
+          </p>
+          <p>
+            前日比: {stockData.regularMarketChange}{" "}
+            {stockData.currency === "JPY" ? "円" : "USD"} (
             {stockData.regularMarketChangePercent.toFixed(2)}%)
           </p>
           <button onClick={() => onRemove(symbol)}>削除</button>
@@ -92,7 +98,7 @@ const StockPanel = ({ symbol, onRemove }) => {
 const StockTracker = () => {
   const [stocks, setStocks] = useState(() => {
     const savedStocks = JSON.parse(localStorage.getItem(STOCK_KEY));
-    return savedStocks ? savedStocks : ["^N225"];
+    return savedStocks ? savedStocks : ["^N225", "^GSPC"];
   });
   const [newStock, setNewStock] = useState("");
   const [updateInterval, setUpdateInterval] = useState(() => {
@@ -128,7 +134,7 @@ const StockTracker = () => {
           placeholder="ティッカーコード (例: AAPL, TSLA, ^N225)"
         />
         <button onClick={addStock}>追加</button>
-        <p>例: トヨタ `7203.T`, S&P500 `^GSPC`, Apple `AAPL`</p>
+        <p>例: トヨタ `7203.T`, Apple `AAPL`</p>
       </div>
       <div>
         <label>更新頻度: </label>

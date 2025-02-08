@@ -3,7 +3,7 @@ import StockTracker from "./StockTracker";
 const App = () => {
   return (
     <div>
-      <h1>My Stock Tracker</h1>
+      <h1>My Stock Watch</h1>
       <StockTracker />
     </div>
   );
