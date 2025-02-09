@@ -12,7 +12,7 @@ import "./StockTracker.css";
 const STOCK_KEY = "savedStocks";
 const UPDATE_KEY = "updateFrequency";
 const DEFAULT_UPDATE_INTERVAL = 60000;
-const DEFAULT_STOCKS = ["^N225", "^GSPC"]; // デフォルトの銘柄
+const DEFAULT_STOCKS = ["^N225", "^GSPC"]; // デフォルトの銘柄(削除させない)
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
@@ -22,7 +22,7 @@ const Clock = () => {
     return () => clearInterval(timer);
   }, []);
 
-  return <h2>{time.toLocaleString("ja-JP", { hour12: false })}</h2>;
+  return <h1>{time.toLocaleString("ja-JP", { hour12: false })}</h1>;
 };
 
 const ExchangeRatePanel = () => {
@@ -44,7 +44,7 @@ const ExchangeRatePanel = () => {
 
   return (
     <div className="exchange-panel">
-      <h3>為替レート</h3>
+      <h2>為替レート</h2>
       {rates ? (
         <div>
           <p>USD/JPY: {rates.USD_JPY} 円</p>
@@ -171,7 +171,7 @@ const StockTracker = () => {
       setErrorMessage("");
     } catch (error) {
       setErrorMessage(
-        "銘柄を取得できませんでした。ティッカーシンボルを確認してください。"
+        "銘柄を取得できませんでした。ティッカーコードを確認してください。"
       );
     }
   };
@@ -185,13 +185,14 @@ const StockTracker = () => {
       <Clock />
       <ExchangeRatePanel />
       <div>
+        <h2>マイ銘柄</h2>
         <input
           value={newStock}
           onChange={(e) => setNewStock(e.target.value)}
           placeholder="ティッカーコード (例: AAPL, TSLA, ^N225)"
         />
         <button onClick={addStock}>追加</button>
-        <p>例: トヨタ `7203.T`, S&P500 `^GSPC`, Apple `AAPL`</p>
+        <p>例: トヨタ `7203.T`, Apple `AAPL`</p>
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
       </div>
       <div>
