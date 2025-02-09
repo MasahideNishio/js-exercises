@@ -60,6 +60,9 @@ const ExchangeRatePanel = () => {
 const StockPanel = ({ symbol, onRemove, isDefault }) => {
   const [stockData, setStockData] = useState(null);
   const [historicalData, setHistoricalData] = useState([]);
+  const [aiOpinion, setAiOpinion] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [loading, setLoading] = useState(false); // 待機状態を示すフラグ
 
   const fetchStockData = async (symbol) => {
     try {
@@ -79,7 +82,6 @@ const StockPanel = ({ symbol, onRemove, isDefault }) => {
       );
       if (!response.ok) throw new Error("Failed to fetch historical data");
       const data = await response.json();
-
       const formattedData = data.slice(-7).map((entry) => ({
         date: entry.date.split("T")[0],
         price: entry.close,
@@ -87,6 +89,30 @@ const StockPanel = ({ symbol, onRemove, isDefault }) => {
       setHistoricalData(formattedData);
     } catch (error) {
       console.error("Error fetching historical data:", error);
+    }
+  };
+
+  const fetchAiOpinion = async () => {
+    if (!stockData) return;
+    setLoading(true); // 待機中状態を開始
+
+    try {
+      const response = await fetch("http://localhost:3001/api/gemini", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          symbol: stockData.symbol,
+          name: stockData.longName,
+        }),
+      });
+      if (!response.ok) throw new Error("Failed to fetch AI opinion");
+      const data = await response.json();
+      setAiOpinion(data.analysis);
+      setShowPopup(true);
+    } catch (error) {
+      console.error("Error fetching AI opinion:", error);
+    } finally {
+      setLoading(false); // 待機中状態を終了
     }
   };
 
@@ -114,6 +140,7 @@ const StockPanel = ({ symbol, onRemove, isDefault }) => {
             {stockData.regularMarketChangePercent.toFixed(2)}%)
           </p>
           {!isDefault && <button onClick={() => onRemove(symbol)}>削除</button>}
+          <button onClick={fetchAiOpinion}>AIアドバイス</button>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={historicalData}>
               <XAxis dataKey="date" />
@@ -125,6 +152,23 @@ const StockPanel = ({ symbol, onRemove, isDefault }) => {
         </div>
       ) : (
         <p>読み込み中...</p>
+      )}
+
+      {/* ポップアップ表示部分 */}
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <p>{aiOpinion}</p>
+            <button onClick={() => setShowPopup(false)}>閉じる</button>
+          </div>
+        </div>
+      )}
+
+      {/* 待機中の表示 */}
+      {loading && (
+        <div className="loading-overlay">
+          <p>AIの見解を取得中...</p>
+        </div>
       )}
     </div>
   );
